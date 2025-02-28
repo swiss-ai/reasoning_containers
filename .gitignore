@@ -1,0 +1,3 @@
+*.sqsh
+build_*.log
+**/tmp/
