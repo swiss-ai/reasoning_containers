@@ -112,12 +112,12 @@ If you want to add or change versions of any dependencies in a container, follow
       git push origin HEAD
       ```
 
-### Building Containers with `build_env.sh`
+### Manually Building Containers with `build_env.sh`
 
-The `build_env.sh` script can be used to build images directly on a compute node (to avoid slowing down the login node)
+`upd_project.sh` should handle mose of your needs, if you need more low-level control over the environment files you can run `build_env.sh` directly on a compute node (to avoid slowing down the login node)
 
 ```bash
-sdebug bash -c "$SCRATCH/reasoning_containers/build_env.sh '<PROJECT_NAME>'"
+sdebug bash -c "$SCRATCH/imgs/build_env.sh '<PROJECT_NAME>'"
 ```
 1. Analyzes the Dockerfile to identify base image dependencies
 2. Recursively builds any local base images that don't exist (including stages)
