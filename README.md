@@ -14,15 +14,15 @@ This workflow uses Git for version control of Dockerfiles while keeping the actu
 ├── upd_project.sh         # Script for managing project environments
 │
 ├── reasoning_base/        # Base image
-│   ├── Dockerfile         # Base Dockerfile (version controlled)
-│   ├── image.sqsh         # Built image (not in git - ignored)
+│   ├── Dockerfile         # Base Dockerfile                                  (version controlled)
+│   ├── image.sqsh         # Built image                                    (not in git - ignored)
 │   └── env.toml           # Environment configuration (generated after build, version controlled)
 └── projects/              # Project-specific images
     ├── reasoning:latest/  # Latest reasoning project -> points to other project
     ├── reasoning:2025.1/  # Reasoning project version 2025.1
-    │   ├── Dockerfile     # Project-specific Dockerfile (version controlled)
-    │   ├── entrypoint.sh  # Project-specific entrypoint script (version controlled)
-    │   ├── image.sqsh     # Built image (not in git - ignored)
+    │   ├── Dockerfile     # Project-specific Dockerfile                      (version controlled)
+    │   ├── entrypoint.sh  # Project-specific entrypoint script               (version controlled)
+    │   ├── image.sqsh     # Built image                                    (not in git - ignored)
     │   └── env.toml       # Environment configuration (generated after build, version controlled)
     └── ...                # Other projects
 ```
