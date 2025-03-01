@@ -12,11 +12,11 @@ This workflow uses Git for version control of Dockerfiles while keeping the actu
 ├── .gitignore             # Excludes *.sqsh files, *.log, and tmp/
 ├── build_env.sh           # Global build script for environments
 ├── upd_project.sh         # Script for managing project environments
+│
 ├── reasoning_base/        # Base image
 │   ├── Dockerfile         # Base Dockerfile (version controlled)
 │   ├── image.sqsh         # Built image (not in git - ignored)
 │   └── env.toml           # Environment configuration (generated after build, version controlled)
-│
 └── projects/              # Project-specific images
     ├── reasoning:latest/  # Latest reasoning project -> points to other project
     ├── reasoning:2025.1/  # Reasoning project version 2025.1
