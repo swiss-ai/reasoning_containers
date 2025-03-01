@@ -1,6 +1,6 @@
 #!/bin/bash
-# build_env.sh - Global build script for envs
-# Usage: ./build_env.sh <env_name>
+# env_build.sh - Global build script for envs
+# Usage: ./env_build.sh <env_name>
 
 set -eo pipefail
 

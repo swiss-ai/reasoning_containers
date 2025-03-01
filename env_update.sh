@@ -166,11 +166,11 @@ build_image() {
         exit 1
     fi
 
-    # Use the build_env.sh script to build the image
-    if [ -f "$REPO_DIR/build_env.sh" ]; then
-        sdebug bash -c "$REPO_DIR/build_env.sh '$PROJECT_NAME'"
+    # Use the env_build.sh script to build the image
+    if [ -f "$REPO_DIR/env_build.sh" ]; then
+        sdebug bash -c "$REPO_DIR/env_build.sh '$PROJECT_NAME'"
     else
-        echo "Error: build_env.sh script not found in $REPO_DIR"
+        echo "Error: env_build.sh script not found in $REPO_DIR"
         echo "Check the repository for the script and ensure it's in the repository main directory"
         exit 1
     fi

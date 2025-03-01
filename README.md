@@ -10,8 +10,8 @@ This workflow uses Git for version control of Dockerfiles while keeping the actu
 /capstor/store/cscs/swissai/a06/reasoning/imgs/  # Git repository
 ├── .git/                  # Git repository metadata
 ├── .gitignore             # Excludes *.sqsh files, *.log, and tmp/
-├── build_env.sh           # Global build script for environments
-├── upd_project.sh         # Script for managing project environments
+├── env_build.sh           # Global build script for environments
+├── env_update.sh         # Script for managing project environments
 │
 ├── reasoning_base/        # Base image
 │   ├── Dockerfile         # Base Dockerfile                                  (version controlled)
@@ -50,7 +50,7 @@ This workflow uses Git for version control of Dockerfiles while keeping the actu
 
 First read _'Building a Container'_ https://github.com/swiss-ai/reasoning_getting-started
 
-### Testing Modified Containers with `upd_project.sh`
+### Testing Modified Containers with `env_update.sh`
 
 If you want to add or change versions of any dependencies in a container, follow these steps:
 
@@ -70,9 +70,9 @@ If you want to add or change versions of any dependencies in a container, follow
    - `./projects/$PROJECT_NAME/Dockerfile`
    - `./projects/$PROJECT_NAME/entrypoint.sh` if applicable
 
-4. Run the `upd_project.sh` script to create a branch and set up the environment
+4. Run the `env_update.sh` script to create a branch and set up the environment
    ```bash
-   ./upd_project.sh remote "$PROJECT_NAME"
+   ./env_update.sh remote "$PROJECT_NAME"
    ```
    - A branch will be created `<PROJECT_NAME>_<USER>_<DATE:TIME>`
    - If the project exists:
@@ -91,9 +91,9 @@ If you want to add or change versions of any dependencies in a container, follow
 7. If everything works, you can try to build the container
    1. Exit the debug compute node `ctrl+d`
    2. Edit the `./projects/$PROJECT_NAME/Dockerfile` and `./projects/$PROJECT_NAME/entrypoint.sh` (if applicable)
-   3. Build the image locally (you can also run `sdebug bash -c "$SCRATCH/reasoning_containers/build_env.sh '$PROJECT_NAME'"`)
+   3. Build the image locally (you can also run `sdebug bash -c "$SCRATCH/reasoning_containers/env_build.sh '$PROJECT_NAME'"`)
    ```bash
-   ./upd_project.sh build "$PROJECT_NAME"
+   ./env_update.sh build "$PROJECT_NAME"
    ```
    This will submit a job to build the image. You can monitor the progress with:
    ```bash
@@ -102,7 +102,7 @@ If you want to add or change versions of any dependencies in a container, follow
 
 8. If built successfully, test the image with our codebase
    ```bash
-   ./upd_project.sh local "$PROJECT_NAME"
+   ./env_update.sh local "$PROJECT_NAME"
    ```
    This will launch a debug environment using your locally built image
 
@@ -113,12 +113,12 @@ If you want to add or change versions of any dependencies in a container, follow
       git push origin HEAD
       ```
 
-### Manually Building Containers with `build_env.sh`
+### Manually Building Containers with `env_build.sh`
 
-`upd_project.sh` should handle mose of your needs, if you need more low-level control over the environment files you can run `build_env.sh` directly on a compute node (to avoid slowing down the login node)
+`env_update.sh` should handle mose of your needs, if you need more low-level control over the environment files you can run `env_build.sh` directly on a compute node (to avoid slowing down the login node)
 
 ```bash
-sdebug bash -c "$SCRATCH/imgs/build_env.sh '<PROJECT_NAME>'"
+sdebug bash -c "$SCRATCH/imgs/env_build.sh '<PROJECT_NAME>'"
 ```
 1. Analyzes the Dockerfile to identify base image dependencies
 2. Recursively builds any local base images that don't exist (including stages)
