@@ -11,7 +11,7 @@ This workflow uses Git for version control of Dockerfiles while keeping the actu
 ├── .git/                  # Git repository metadata
 ├── .gitignore             # Excludes *.sqsh files, *.log, and tmp/
 ├── env_build.sh           # Global build script for environments
-├── env_update.sh         # Script for managing project environments
+├── env_update.sh          # Script for managing project environments
 │
 ├── reasoning_base/        # Base image
 │   ├── Dockerfile         # Base Dockerfile                                  (version controlled)
