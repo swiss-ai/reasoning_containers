@@ -76,10 +76,18 @@ If you want to add or change versions of any dependencies in a container, follow
    ```
    - A branch will be created `<PROJECT_NAME>_<USER>_<DATE:TIME>`
    - If the project exists:
-     - Local `~/.edf/<PROJECT_NAME>.toml` will extend `$PROJECT_NAME/env.toml`
+     - Local `~/.edf/<PROJECT_NAME>.toml` will extend `$PROJECT_NAME/env.toml` by updating
+     ```toml
+     base_environment = "<PROJECT_NAME_DIR>/env.toml" # Updated by env_update.sh
+     ...
+     ```
    - If the project doesn't exist:
-     - Creates project directory `./projects/$PROJECT_NAME` with template Dockerfile extending `reasoning_base/Dockerfile`
-     - Local `~/.edf/<PROJECT_NAME>.toml` will extend `$PROJECT_NAME/env.toml` which preliminarily extends `reasoning_base/env.toml` until the image is built
+     - Creates project directory `./projects/$PROJECT_NAME` with template Dockerfile extending `reasoning_base/Dockerfile` by adding
+     ```dockerfile
+     FROM reasoning_base # Updated by env_update.sh
+     ...
+     ```
+     - Local `~/.edf/<PROJECT_NAME>.toml` will extend `$PROJECT_NAME/env.toml` which preliminarily extends `reasoning_base/env.toml` until the image is built (see above '_base_environment_')
    - Updates `workdir = "$HOME/scratch"` in local `~/.edf/<PROJECT_NAME>.toml`
 
    A debug job will instantiate with the env `sdebug --environment="$PROJECT_NAME" bash` resolving to `~/.edf/<PROJECT_NAME>.toml`
@@ -91,7 +99,7 @@ If you want to add or change versions of any dependencies in a container, follow
 7. If everything works, you can try to build the container
    1. Exit the debug compute node `ctrl+d`
    2. Edit the `./projects/$PROJECT_NAME/Dockerfile` and `./projects/$PROJECT_NAME/entrypoint.sh` (if applicable)
-   3. Build the image locally (you can also run `sdebug bash -c "$SCRATCH/reasoning_containers/env_build.sh '$PROJECT_NAME'"`)
+   3. Build the image locally (you can also run `sdebug bash -c "$SCRATCH/imgs/env_build.sh '$PROJECT_NAME'"`)
    ```bash
    ./env_update.sh build "$PROJECT_NAME"
    ```
@@ -100,7 +108,7 @@ If you want to add or change versions of any dependencies in a container, follow
    watch -n 10 "squeue --me"
    ```
 
-8. If built successfully, test the image with our codebase
+8. If built successfully, instantiate a container with the env
    ```bash
    ./env_update.sh local "$PROJECT_NAME"
    ```
@@ -108,9 +116,9 @@ If you want to add or change versions of any dependencies in a container, follow
 
 9. Once it loads the debug compute node, test there is no compatibility issues with test-suites in our codebase
 
-10. If it works, you can push changes and create a PR
+10. If it works, you can add, commit, and push your changes then create a PR
       ```bash
-      git push origin HEAD
+      cd $SCRATCH/imgs && git add . && git commit -m "Add your commit message here" && git push origin HEAD
       ```
 
 ### Manually Building Containers with `env_build.sh`
