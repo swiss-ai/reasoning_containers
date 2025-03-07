@@ -143,7 +143,8 @@ build_image() {
     done
 
     # Create a temporary build directory in the same location as the Dockerfile
-    local temp_dir="$dir_path/tmp"
+    local tmp="tmp"
+    local temp_dir="$dir_path/$tmp"
     rm -rf "$temp_dir" && mkdir -p "$temp_dir"
 
     # Copy Dockerfile to temp directory
@@ -160,17 +161,18 @@ build_image() {
 
     # Build with Podman (from the directory containing the Dockerfile)
     pushd "$dir_path" > /dev/null
-    podman build -t "$image_name" "$temp_dir"
+    podman build -t "$image_name" "$tmp"
 
     # Only perform Enroot conversion and create TOML for the final image
     if [ "$is_final_image" = "true" ]; then
         # For Enroot format
         echo "Converting $image_name to Enroot format..."
-        enroot import -o "$dir_path/image.sqsh" "podman://$image_name"
+        enroot_output=$(enroot import -o "./image.sqsh" "podman://$image_name" || true)
+        echo "Enroot output: $enroot_output"
 
         # Create env.toml file
         echo "Creating env.toml file..."
-        cat > "$dir_path/env.toml" << EOF
+        cat > "./env.toml" << EOF
 image = "/capstor/store/cscs/swissai/a06/reasoning/imgs/$dir_path/image.sqsh"
 mounts = ["/capstor", "/iopsstor", "/users"]
 workdir = "/workspace"
@@ -184,10 +186,9 @@ EOF
         echo "Skipping Enroot conversion for intermediate image: $image_name"
     fi
 
-    popd > /dev/null
+    rm -rf "$tmp"
 
-    # Clean up the temporary directory
-    rm -rf "$temp_dir"
+    popd > /dev/null
 
     echo "Build complete: $image_name"
 }

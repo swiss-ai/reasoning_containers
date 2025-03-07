@@ -28,7 +28,7 @@ COMMAND=$1
 PROJECT_NAME=$2
 BASE_ENV="reasoning_base"
 BASE_REPO_DIR="/capstor/store/cscs/swissai/a06/reasoning/imgs"
-BRANCH_NAME="${PROJECT_NAME}_${USER}_$(date +"%y-%m-%d:%H-%M-%S")"
+BRANCH_NAME="${PROJECT_NAME}_${USER}_$(date -u +"%y-%m-%dT%H-%M-%SZ")"
 REPO_DIR="$SCRIPT_DIR"
 EDF_DIR="$HOME/.edf"
 
@@ -146,8 +146,8 @@ EOF
 
     echo "Created local environment file at $EDF_DIR/$PROJECT_NAME.toml"
 
-    echo "Launching debug environment with sdebug..."
-    sdebug --environment="$PROJECT_NAME" bash
+    echo "Launching debug environment with srun..."
+    srun --account=a-$(id -Gn) -p debug --pty --container-writable --environment="$PROJECT_NAME" bash
 }
 
 # Function to build the podman image
@@ -168,7 +168,7 @@ build_image() {
 
     # Use the env_build.sh script to build the image
     if [ -f "$REPO_DIR/env_build.sh" ]; then
-        sdebug bash -c "$REPO_DIR/env_build.sh '$PROJECT_NAME'"
+        srun --account=a-$(id -Gn) -p debug --pty --container-writable bash -c "$REPO_DIR/env_build.sh '$PROJECT_NAME'"
     else
         echo "Error: env_build.sh script not found in $REPO_DIR"
         echo "Check the repository for the script and ensure it's in the repository main directory"

@@ -74,7 +74,7 @@ If you want to add or change versions of any dependencies in a container, follow
    ```bash
    ./env_update.sh remote "$PROJECT_NAME"
    ```
-   - A branch will be created `<PROJECT_NAME>_<USER>_<DATE:TIME>`
+   - A branch will be created `<PROJECT_NAME>_<USER>_<DATE_TIME>`
    - If the project exists:
      - Local `~/.edf/<PROJECT_NAME>.toml` will extend `$PROJECT_NAME/env.toml` by updating
      ```toml
@@ -119,6 +119,7 @@ If you want to add or change versions of any dependencies in a container, follow
 10. If it works, you can add, commit, and push your changes then create a PR
       ```bash
       cd $SCRATCH/imgs && git add . && git commit -m "Add your commit message here" && git push origin HEAD
+      unset PROJECT_NAME
       ```
 
 ### Manually Building Containers with `env_build.sh`
