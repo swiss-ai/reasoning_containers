@@ -3,10 +3,6 @@ name: Commit Digest
 on:
     # Add as many schedules as you need - the workflow will always report changes since its last run
     schedule:
-    - cron: '0 1 * * 5'
-    - cron: '15 1 * * 5'
-    - cron: '0 2 * * 5'
-    - cron: '15 2 * * 5'
     - cron: '0 6 * * 1'  # Monday at 6 AM UTC
     - cron: '0 6 * * 3'  # Wednesday at 6 AM UTC
     # - cron: '30 12 * * *'  # Every day at 12:30 PM UTC
