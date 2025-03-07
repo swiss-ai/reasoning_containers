@@ -1,4 +1,19 @@
 # Commit Digest v0.0
+
+# Enable exit on error
+set -e
+
+# Function to handle errors
+error_handler() {
+    echo "An error occurred in the script at line: $1"
+    # Only try to delete the processing message if we have a timestamp
+    [ -n "$MY_PROCESSING_TS" ] && slack_api_call "delete" "$MY_PROCESSING_TS" > /dev/null
+    exit 1
+}
+
+# Trap errors and call error_handler
+trap 'error_handler $LINENO' ERR
+
 # Pre-defined in env
 # SLACK_API_TOKEN: ${{ secrets.SLACK_API_TOKEN }}
 # SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL_ID }}
@@ -332,3 +347,5 @@ EOL
 else
     slack_api_call "delete" "$MY_PROCESSING_TS" > /dev/null
 fi
+
+exit 0
